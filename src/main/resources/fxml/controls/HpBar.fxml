@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml">
+	<BorderPane GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2">
+		<left>
+			<HBox>
+				<Label text="${controller.pokemon.label}" />
+				<Label text="${controller.pokemon.gender.symbol}" styleClass="genderLabel" />
+			</HBox>
+		</left>
+		<right>
+			<Label text="${controller.pokemon.levelLabel}" />
+		</right>
+	</BorderPane>
+	<StackPane fx:id="stackPane">
+		<Rectangle height="20" width="212" style="-fx-fill: black;" />
+		<Rectangle height="8" width="200" fx:id="innerBar" fill="${controller.pokemon.hpColor}" StackPane.alignment="CENTER_LEFT">
+			<StackPane.margin>
+				<Insets top="6" bottom="6" left="6" right="6"/>
+			</StackPane.margin>
+		</Rectangle>
+	</StackPane>
+</fx:root>

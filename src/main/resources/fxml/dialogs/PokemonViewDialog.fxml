@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import asrz.Pokemon.controllers.controls.*?>
+
+<fx:root type="javafx.scene.control.DialogPane" xmlns:fx="http://javafx.com/fxml">
+	<buttonTypes>
+		<ButtonType fx:constant="CLOSE" />
+	</buttonTypes>
+	<content>
+		<HBox>
+			<VBox>
+				<HpBar pokemon="$controller.pokemon"/>
+				<ImageView fx:id="sprite" />
+			</VBox>
+			<TabPane tabClosingPolicy="UNAVAILABLE">
+				<Tab text="Stats">
+					<VBox>
+						<GridPane>
+							<HpBar fx:id="hpBar" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" pokemon="$controller.pokemon"/>
+							
+							<Label text="HP" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+							<Label text="${controller.pokemon.hpLabel}" GridPane.columnIndex="1" GridPane.rowIndex="1" /> 
+							
+							<Label text="Attack" GridPane.columnIndex="0" GridPane.rowIndex="2"/> 
+							<Label text="${controller.pokemon.attack}" GridPane.columnIndex="1" GridPane.rowIndex="2"/> 
+							
+							<Label text="Defense" GridPane.columnIndex="0" GridPane.rowIndex="3"/> 
+							<Label text="${controller.pokemon.defense}" GridPane.columnIndex="1" GridPane.rowIndex="3"/> 
+							
+							<Label text="Special Attack" GridPane.columnIndex="0" GridPane.rowIndex="4"/> 
+							<Label text="${controller.pokemon.specialAttack}" GridPane.columnIndex="1" GridPane.rowIndex="4"/> 
+							
+							<Label text="Special Defense" GridPane.columnIndex="0" GridPane.rowIndex="5"/> 
+							<Label text="${controller.pokemon.specialDefense}" GridPane.columnIndex="1" GridPane.rowIndex="5"/> 
+							
+							<Label text="Speed" GridPane.columnIndex="0" GridPane.rowIndex="6"/> 
+							<Label text="${controller.pokemon.speed}" GridPane.columnIndex="1" GridPane.rowIndex="6"/> 
+						</GridPane>
+						<Label text="Ability" />
+						<Label text="${controller.pokemon.ability.description}" />
+						<HBox>
+							<Button text="Damage" onAction="#onClickDamageButton" />
+							<Button text="Level Up" onAction="#onClickLevelUpButton" />
+						</HBox>
+					</VBox>
+				</Tab>
+				<Tab text="Moves">
+					<VBox>
+						<MoveButtons fx:id="moveButtons" />
+						<BorderPane >
+							<left>
+								<HBox spacing="5">
+									<Label text="Power" />
+									<Label fx:id="powerLabel" />
+								</HBox>
+							</left>
+							<right>
+								<HBox spacing="5">
+									<Label text="Accuracy" />
+									<Label fx:id="accuracyLabel" />
+								</HBox>
+							</right>
+							<bottom>
+								<Label fx:id="detailsLabel" wrapText="true" prefHeight="200" alignment="TOP_CENTER" textAlignment="LEFT">
+									<padding><Insets top="10" /></padding>
+								</Label>
+							</bottom>
+						</BorderPane>
+					</VBox>
+				</Tab>
+			</TabPane>
+		</HBox>
+	</content>
+</fx:root>

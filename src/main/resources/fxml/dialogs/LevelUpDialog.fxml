@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+
+<fx:root type="javafx.scene.control.DialogPane" xmlns:fx="http://javafx.com/fxml">
+	<buttonTypes>
+		<ButtonType fx:constant="CLOSE" />
+	</buttonTypes>
+	<content>
+		<GridPane hgap="5">
+			<Label fx:id="pokemonLabel" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="bold"/>
+			<Label fx:id="oldLevelLabel" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="bold"/>
+			<Label text="" GridPane.rowIndex="0" GridPane.columnIndex="2" styleClass="bold"/>
+			<Label fx:id="newLevelLabel" GridPane.rowIndex="0" GridPane.columnIndex="3" styleClass="bold"/>
+			
+			<Label GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="4" />
+			
+			<Label text="HP"        GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="bold"/>
+			<Label fx:id="oldHp"    GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+			<Label fx:id="hpChange" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+			<Label fx:id="newHp"    GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+			
+			<Label text="Attack" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="bold"/>
+			<Label fx:id="oldAttack" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+			<Label fx:id="attackChange" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+			<Label fx:id="newAttack" GridPane.rowIndex="3" GridPane.columnIndex="3"/>
+			
+			<Label text="Defense" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="bold"/>
+			<Label fx:id="oldDefense" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+			<Label fx:id="defenseChange" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+			<Label fx:id="newDefense" GridPane.rowIndex="4" GridPane.columnIndex="3"/>
+			
+			<Label text="Special Attack" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="bold"/>
+			<Label fx:id="oldSpecialAttack" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+			<Label fx:id="specialAttackChange" GridPane.rowIndex="5" GridPane.columnIndex="2"/>
+			<Label fx:id="newSpecialAttack" GridPane.rowIndex="5" GridPane.columnIndex="3"/>
+			
+			<Label text="Special Defense" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="bold"/>
+			<Label fx:id="oldSpecialDefense" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+			<Label fx:id="specialDefenseChange" GridPane.rowIndex="6" GridPane.columnIndex="2"/>
+			<Label fx:id="newSpecialDefense" GridPane.rowIndex="6" GridPane.columnIndex="3"/>
+			
+			<Label text="Speed" GridPane.rowIndex="7" GridPane.columnIndex="0" styleClass="bold"/>
+			<Label fx:id="oldSpeed" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+			<Label fx:id="speedChange" GridPane.rowIndex="7" GridPane.columnIndex="2"/>
+			<Label fx:id="newSpeed" GridPane.rowIndex="7" GridPane.columnIndex="3"/>
+		</GridPane>
+	</content>
+</fx:root>

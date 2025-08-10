@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.control.Button" xmlns:fx="http://javafx.com/fxml" styleClass="movePanel,moveButton,bordered">
+	<graphic>
+		<VBox alignment="CENTER">
+			<Label text="${controller.move.name}"/>
+			<Label text="${controller.move.ppLabel}" />
+			<HBox fillHeight="true" spacing="5" alignment="CENTER">
+				<Label text="${controller.move.damageClass.symbol}" styleClass="essentiarum,bordered,moveDamageClass" fx:id="damageClassLabel"/>
+				<Label text="${controller.move.type.label}" fx:id="typeLabel"/>
+			</HBox>
+		</VBox>
+	</graphic>
+</fx:root>

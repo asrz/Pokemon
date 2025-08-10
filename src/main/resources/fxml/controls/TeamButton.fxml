@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import asrz.Pokemon.controllers.controls.*?>
+
+<fx:root type="javafx.scene.control.MenuButton" xmlns:fx="http://javafx.com/fxml">
+	<graphic>
+		<HBox>
+			<ImageView fx:id="imageView"/>
+			<HpBar fx:id="hpBar" pokemon="$controller.pokemon"/>
+		</HBox>
+	</graphic>
+	<items>
+		<MenuItem text="Summary" onAction="#onClickSummary"/>
+		<MenuItem text="Switch" onAction="#onClickSwitch"/>
+	</items>
+</fx:root>

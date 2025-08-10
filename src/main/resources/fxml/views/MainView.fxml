@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import asrz.Pokemon.controllers.controls.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="asrz.Pokemon.controllers.views.MainViewController" prefHeight="600">
+	<TabPane side="RIGHT" fx:id="mainTabPane" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE">
+		<Tab>
+			<graphic>
+				<Label text="Pokédex" styleClass="tab-graphic-label" />
+			</graphic>
+			<PokedexTab fx:id="pokedexTab" />
+		</Tab>
+		<Tab>
+			<graphic>
+				<Label text="Pokémon"  styleClass="tab-graphic-label"/>
+			</graphic>
+			<TeamTab fx:id="teamTab"/>
+		</Tab>
+		<Tab>
+			<graphic>
+				<Label text="Bag" styleClass="tab-graphic-label" />
+			</graphic>
+			<BagTab fx:id="bagTab" menuMode="OVERWORLD"/>
+		</Tab>
+		<Tab>
+			<graphic>
+				<Label text="PC" styleClass="tab-graphic-label" />
+			</graphic>
+		</Tab>
+		<Tab>
+			<graphic>
+				<Label text="Map" styleClass="tab-graphic-label" />
+			</graphic>
+			<RegionsTab fx:id="regionsTab" />
+		</Tab>
+		<Tab>
+			<graphic>
+				<Label text="Options" styleClass="tab-graphic-label" />
+			</graphic>
+		</Tab>
+	</TabPane>
+</VBox>

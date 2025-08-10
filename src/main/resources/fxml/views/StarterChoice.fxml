@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import asrz.Pokemon.controllers.controls.*?>
+
+
+<HBox xmlns:fx="http://javafx.com/fxml" fx:controller="asrz.Pokemon.controllers.views.StarterChoiceController">
+	<Button fx:id="spriteButton1" styleClass="spriteButton"/>
+	<Button fx:id="spriteButton2" styleClass="spriteButton" />
+	<Button fx:id="spriteButton3" styleClass="spriteButton" />
+</HBox>

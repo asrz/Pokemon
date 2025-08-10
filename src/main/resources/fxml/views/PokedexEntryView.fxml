@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import asrz.Pokemon.controllers.controls.*?>
+
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="asrz.Pokemon.controllers.views.PokedexEntryViewController">
+	<TabPane tabClosingPolicy="UNAVAILABLE">
+		<Tab text="Stats">
+			<HBox>
+				<ImageView fx:id="sprite" />
+				<GridPane>
+					<Label text="HP"     GridPane.columnIndex="0" GridPane.rowIndex="0" />
+					<Label text="${controller.pokemonSpecies.baseHp}" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+					<Label text="Attack" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+					<Label text="${controller.pokemonSpecies.baseAttack}" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+					<Label text="Defense" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+					<Label text="${controller.pokemonSpecies.baseDefense}" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+					<Label text="Special Attack" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+					<Label text="${controller.pokemonSpecies.baseSpecialAttack}" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+					<Label text="Special Defense" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+					<Label text="${controller.pokemonSpecies.baseSpecialDefense}" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+					<Label text="Speed" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+					<Label text="${controller.pokemonSpecies.baseSpeed}" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+				</GridPane>
+			</HBox>
+		</Tab>
+		<Tab text="Moves">
+			<TableView fx:id="moveTableView">
+			
+			</TableView>
+		</Tab>
+	</TabPane>
+	<Button text="Back" onAction="#onBackButton"/>
+</VBox>

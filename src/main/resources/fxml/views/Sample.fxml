@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="asrz.Pokemon.controllers.views.SampleController" fx:id="root" alignment="CENTER">
+	<TextField fx:id="nameField" promptText="Name"/> 
+	<Button text="New Game" onAction="#buttonClicked"/>
+	
+	<Label text="Load Game" fx:id="loadGameLabel"/> 
+</VBox>

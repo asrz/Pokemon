@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import asrz.Pokemon.controllers.controls.*?>
+
+<fx:root type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml" style="-fx-alignment:center; visible:hidden;">
+	<GridPane>
+		<MoveButton fx:id="moveButton_1" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+		<MoveButton fx:id="moveButton_2" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+		<MoveButton fx:id="moveButton_3" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+		<MoveButton fx:id="moveButton_4" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+	</GridPane>
+</fx:root>

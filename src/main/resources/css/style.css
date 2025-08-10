@@ -1,0 +1,184 @@
+/* FONTS */
+@font-face {
+	src: url('fonts/PKMN_RBYGSC.ttf');
+}
+
+@font-face {
+	src: url('fonts/EssentiarumVG_Desktop.ttf');
+}
+
+/* GENERAL STUFF */
+.debug {
+	-fx-border-style: solid;
+	-fx-border-color: red;
+	-fx-border-width: 1px;
+}
+
+.bordered {
+	-fx-border-style: solid;
+	-fx-border-color: black;
+	-fx-border-width: 1px;
+}
+
+.bold {
+	-fx-font-weight: bold;
+}
+
+.label, .text-field, .button {
+	-fx-font-family: 'PKMN RBYGSC';
+}
+
+/* SPECIFIC CONTROLS */
+.button.spriteButton {
+	-fx-content-display: top;
+	-fx-graphic-text-gap: 0;
+	-fx-font-size: 14pt;
+}
+
+.tab-pane:right {
+	-fx-tab-min-width:50;
+	-fx-tab-max-width:50;
+	-fx-tab-min-height:150;
+	-fx-tab-max-height:150;
+}
+
+.tab-pane:right .tab-graphic-label {
+	-fx-rotate: 270;
+	-fx-alignment: center;
+	-fx-font-size: 14pt;
+	-fx-min-width: 150;
+	-fx-min-height: 50;
+	-fx-font-family: 'PKMN RBYGSC';
+}
+
+.battleButton {
+	-fx-font-size: 10pt;
+	-fx-pref-width: 102px;
+	-fx-text-alignment: center;
+	-fx-alignment: center;
+}
+
+.essentiarum {
+	-fx-font-family: 'Essentiarum VG';
+}
+
+.moveButton {
+	-fx-pref-width: 200px;
+	-fx-graphic-text-gap: 0px;
+}
+
+.label.moveDamageClass {
+	-fx-pref-width: 50px;
+	-fx-alignment: center;
+	-fx-font-size: 10pt;
+}
+.Physical {
+	-fx-background-color: red;
+	-fx-text-fill: yellow;
+}
+.Special {
+	-fx-background-color: blue;
+	-fx-text-fill: white;
+}
+.Status {
+	-fx-background-color: lightgrey;
+	-fx-text-fill: white;
+}
+
+.movePanel {
+	-fx-alignment: center;
+	-fx-font-size: 12pt;
+}
+
+.teamButton {
+	-fx-pref-width: 400px;
+	-fx-pref-height: 100px;
+}
+.bigTeamButton {
+	-fx-pref-width: 400px;
+	-fx-pref-height: 200px;
+}
+
+.label.genderLabel.Female {
+	-fx-text-fill: pink;
+}
+.label.genderLabel.Male {
+	-fx-text-fill: lightblue;
+}
+
+/* TYPE COLOURS */
+.Normal {
+	-fx-background-color:  #aab09f;
+}
+
+.Fire {
+	-fx-background-color: #ea7a3c;
+}
+
+.Water {
+	-fx-background-color: #539ae2;
+}
+
+.Grass {
+	-fx-background-color: #71c558;
+}
+
+.Electric {
+	-fx-background-color: #e5c531;
+}
+
+.Ice {
+	-fx-background-color: #70cbd4;
+}
+
+.Bug {
+	-fx-background-color: #94bc4a;
+}
+
+.Poison {
+	-fx-background-color: #b468b7;
+}
+
+.Psychic {
+	-fx-background-color: #e5709b;
+}
+
+.Fighting {
+	-fx-background-color: #cb5f48;
+}
+
+.Flying {
+	-fx-background-color: #7da6de;
+}
+
+.Rock {
+	-fx-background-color: #b2a061;
+}
+
+.Ground {
+	-fx-background-color: #cc9f4f;
+}
+
+.Ghost {
+	-fx-background-color: #846ab6;
+}
+
+.Dragon {
+	-fx-background-color: #6a7baf;
+}
+
+.Dark {
+	-fx-background-color: #736c75;
+}
+
+.Steel {
+	-fx-background-color: #89a1b0;
+}
+
+.Fairy {
+	-fx-background-color: #e397d1;
+}
+
+.Unknown {
+	-fx-background-color: #81a596;
+}
