@@ -67,6 +67,7 @@ public enum StatusAilment {
 			case CONFUSION: return String.format("%s is now confused", pokemon.getLabel());
 			case INFATUATION: return String.format("%s is in love with %s", pokemon.getLabel(), inflicter.getLabel());
 			case LEECH_SEED: return String.format("%s has been seeded by %s", pokemon.getLabel(), inflicter.getLabel());
+			case TRAP: return String.format("%s can't escape", pokemon.getLabel());
 			default: throw new RuntimeException("Unhandled StatusAilment: " + name());
 		}
 	}

@@ -8,11 +8,13 @@ import asrz.Pokemon.model.Pokedex
 import asrz.Pokemon.model.PokedexEntry
 import asrz.Pokemon.model.PokemonSpecies
 import asrz.Pokemon.model.enums.PokedexEntryStatus
+import asrz.Pokemon.pokeAPI.model.games.PokedexDAO
 import asrz.Pokemon.util.ImageLoader
 import asrz.Pokemon.util.Util
 import com.mongodb.client.model.Filters
 import java.io.IOException
 import java.util.List
+import java.util.Map
 import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
@@ -27,6 +29,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.text.TextAlignment
+import asrz.Pokemon.util.Timer
 
 class PokedexTab extends HBox implements IController {
 	
@@ -45,35 +48,58 @@ class PokedexTab extends HBox implements IController {
 	}
 	
 	override initialize() {
-		updateTabs()
+		val timer = new Timer()
+		createTabs()
+		timer.endStep("Pokedex tab")
 	}
 	
-	def void updateTabs() {
+	def void createTabs() {
+		val pokedexDaoCache = database.getPokedexes(Filters.in("id", player.pokedexes.map[pokedexDaoId])).toMap[id]
+		
+		val speciesNames = player.pokedexes.flatMap[pokedex |
+			val pokedexDao = pokedexDaoCache.get(pokedex.pokedexDaoId)
+			val entriesByNumber = pokedexDao.pokemonEntries.toMap[entryNumber]
+			return pokedex.entriesAsList.map[entry |
+				entriesByNumber.get(entry.number).pokemonSpecies.name
+			]
+		].toSet.toList
+		val speciesCache = c.pokemonService.getPokemonSpeciesByName(speciesNames)
+		
 		player.pokedexes.forEach[ Pokedex pokedex |
-			tabPane.tabs.add(new Tab(pokedex.name, getListView(pokedex)))
+			tabPane.tabs.add(new Tab(pokedex.name, getListView(pokedex, speciesCache, pokedexDaoCache)))
 		]
 		
 		player.pokedexes.addListener(new ListChangeListener<Pokedex>() {
 			override onChanged(Change<? extends Pokedex> change) {
 				while (change.next()) {
 					change.addedSubList.forEach[ Pokedex pokedex |
-						tabPane.tabs.add(new Tab(pokedex.name, getListView(pokedex)))
+						tabPane.tabs.add(new Tab(pokedex.name, getListView(pokedex, speciesCache, pokedexDaoCache)))
 					]
 				}
 			}
 		})
 	}
 	
-	def ListView<Pokedex> getListView(Pokedex pokedex) {
+	def ListView<PokedexEntryButton> getListView(Pokedex pokedex, Map<String, PokemonSpecies> speciesCache, Map<Integer, PokedexDAO> pokedexDaoCache) {
 		val ObservableList<PokedexEntryButton> list = FXCollections.observableArrayList(
-			getButtonsFromPokedexEntries(pokedex, pokedex.entriesAsList)
+			getButtonsFromPokedexEntries(pokedex, pokedex.entriesAsList, speciesCache, pokedexDaoCache)
 		)
 		
 		pokedex.entriesAsList.addListener(new ListChangeListener<PokedexEntry>() {
 			override onChanged(Change<? extends PokedexEntry> change) {
 				while (change.next()) {
-					if (change.wasAdded) {
-						list.addAll(change.from, getButtonsFromPokedexEntries(pokedex, change.getAddedSubList()))
+					println("CHANGE!")
+					if (change.wasUpdated) {
+						val updatedButtons = getButtonsFromPokedexEntries(pokedex, pokedex.entriesAsList.subList(change.from, change.to), speciesCache, pokedexDaoCache)
+						for (var index = change.from; index < change.to; index++) {
+							list.set(index, updatedButtons.get(index - change.from))
+						}
+					} else if (change.wasAdded) {
+						val pokedexDao = pokedexDaoCache.get(pokedex.pokedexDaoId)
+						val pokedexEntriesByNumber = pokedexDao.pokemonEntries.toMap[entryNumber]
+						val addedNames = change.addedSubList.map[number].map[number | pokedexEntriesByNumber.get(number).pokemonSpecies.name]
+						val addedSpeciesCache = c.pokemonService.getPokemonSpeciesByName(addedNames)
+						list.addAll(change.from, getButtonsFromPokedexEntries(pokedex, change.getAddedSubList(), addedSpeciesCache, pokedexDaoCache))
 					} else if (change.wasRemoved) {
 						for (var i = change.to-1; i >= change.from; i--) {
 							list.remove(i)
@@ -83,46 +109,30 @@ class PokedexTab extends HBox implements IController {
 			}
 		})
 		
-		new ListView(list)
+		new ListView(list) => [
+			editable = false
+		]
 	}
 	
-	def List<PokedexEntryButton> getButtonsFromPokedexEntries(Pokedex pokedex, List<? extends PokedexEntry> entries) {
+	def List<PokedexEntryButton> getButtonsFromPokedexEntries(Pokedex pokedex, List<? extends PokedexEntry> entries, Map<String, PokemonSpecies> speciesCache, Map<Integer, PokedexDAO> pokedexDaoCache) {
 		if (entries.empty) {
 			return Util.list()
 		}
 		
-		val pokedexDao = database.getPokedexes(Filters.eq("id", pokedex.pokedexDaoId)).first
+		val pokedexDao = pokedexDaoCache.get(pokedex.pokedexDaoId)
 		
 		val pokemonSpeciesNameByEntryNumber = pokedexDao.pokemonEntries.toMap([entryNumber], [pokemonSpecies.name])
 		
-		val min = entries.minBy[number].number
-		val max = entries.maxBy[number].number
-		
-		val range = min..max
-		val pokemonSpeciesNames = range.map[pokemonSpeciesNameByEntryNumber.get(it)]
-		
-		val pokemonSpecies = database.getPokemonSpecies(Filters.in("name", pokemonSpeciesNames))
-		val pokemonSpeciesByName = pokemonSpecies.toMap[name]
-		
-		val pokemonNames = pokemonSpecies.flatMap[varieties].filter[isDefault].map[pokemon.name]
-		val pokemonByName = database.getPokemon(Filters.in("name", pokemonNames)).toMap[name]
-		
-		
 		return entries.map[ entry |
-			val speciesDao = pokemonSpeciesByName.get(pokemonSpeciesNameByEntryNumber.get(entry.number))
-			
-			val pokemon = pokemonByName.get(speciesDao.varieties.findFirst[isDefault].pokemon.name)
-			val species = c.pokemonService.getPokemonSpecies(pokemon)
+			val speciesName = pokemonSpeciesNameByEntryNumber.get(entry.number)
+			val species = speciesCache.get(speciesName)
 			
 			if (entry.status != PokedexEntryStatus.UNKNOWN) {
-				val image = ImageLoader.loadImage(pokemon.sprites.frontDefault)
-				val speciesName = speciesDao.names.findFirst[language.name == player.languageName].name
-				return new PokedexEntryButton(species, entry, image, entry.number, speciesName)
+				val image = ImageLoader.loadImage(species.sprites.frontDefault)
+				return new PokedexEntryButton(species, entry, image, entry.number, species.name)
 			} else {
-				val image = ImageLoader.loadSilhouetteImage(pokemon.sprites)
-				return new PokedexEntryButton(species, entry, image, entry.number, "???") => [
-					disabled = true
-				]
+				val image = ImageLoader.loadSilhouetteImage(species.sprites)
+				return new PokedexEntryButton(species, entry, image, entry.number, "???")
 			}
 		]
 	}
@@ -141,7 +151,7 @@ class PokedexEntryButton extends Button implements IController {
 		alignment = Pos.CENTER_LEFT
 		textAlignment = TextAlignment.RIGHT
 		prefWidth = 400
-		disabled = entry.status == PokedexEntryStatus.UNKNOWN
+		disable = entry.status == PokedexEntryStatus.UNKNOWN
 		text = String.format("%03d %s", number, name)
 		styleClass.add("pokedexEntry")
 		onAction = [

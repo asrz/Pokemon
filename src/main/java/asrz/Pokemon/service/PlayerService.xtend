@@ -7,6 +7,7 @@ import asrz.Pokemon.model.Move
 import asrz.Pokemon.model.Player
 import asrz.Pokemon.model.Pokemon
 import com.mongodb.client.model.Filters
+import asrz.Pokemon.util.Timer
 
 class PlayerService extends BaseService {
 	
@@ -15,6 +16,7 @@ class PlayerService extends BaseService {
 	}
 	
 	def loadGame(Player player) {
+		val timer = new Timer()
 		val pokemonById = database.getLocalPokemon(Filters.in("_id", player.team.allPokemonIds)).toMap[id]
 		val pokemonDaosById = database.getPokemon(Filters.in("id", pokemonById.values.map[pokemonDaoId])).toMap[id]
 		
@@ -60,6 +62,8 @@ class PlayerService extends BaseService {
 			initializeBindings
 			healHpAndStatuses
 		]
+		
+		timer.endStep("load player")
 	}
 	
 	def saveGame(Player player) {
@@ -72,7 +76,7 @@ class PlayerService extends BaseService {
 		
 		for (pokemon : player.team.allPokemon) {
 			pokemon.pokemonDaoId = pokemon.species.pokemonDaoId
-			pokemon.abilityDaoName = pokemon.ability.abilityDaoName
+			pokemon.abilityDaoName = pokemon?.ability?.abilityDaoName
 			pokemon.move_1DaoId = pokemon.move_1?.moveDaoId
 			pokemon.move_2DaoId = pokemon.move_2?.moveDaoId
 			pokemon.move_3DaoId = pokemon.move_3?.moveDaoId

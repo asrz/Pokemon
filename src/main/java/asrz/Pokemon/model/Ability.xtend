@@ -192,6 +192,8 @@ class Abilities {
 			isImmuneToMoveFunction = [ move | return Util.in(move.moveDaoName, "captivate", "taunt") ]
 		],
 		
+		new Ability("cloud-nine"),
+		
 		new Ability("overgrow") => [
 			offensiveDamageModifierFunction = [user, move, target | getStarterMoveDamageModifier(user, move, GRASS) ]
 		],

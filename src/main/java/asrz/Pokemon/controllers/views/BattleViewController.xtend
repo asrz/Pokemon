@@ -141,7 +141,7 @@ class BattleViewController extends BasicController {
 			escapeAttempts = 0
 			round = 1
 			
-			battleCalculator.getInOrderOfSpeed(playerPokemon, opponentPokemon).forEach[ pokemon |
+			battleCalculator.getInOrderOfSpeed(getAllPokemon()).forEach[ pokemon |
 				if (pokemon?.ability?.switchInFunction !== null) {
 					pokemon.ability.switchInFunction.apply(this, pokemon)
 				}
@@ -179,6 +179,10 @@ class BattleViewController extends BasicController {
 		} else {
 			throw new RuntimeException("Unhandled BattleSlot: " + slot.name)
 		}
+	}
+	
+	def List<Pokemon> getAllPokemon() {
+		return Util.list(playerPokemon, opponentPokemon)
 	}
 	
 	@FXML
@@ -283,7 +287,7 @@ class BattleViewController extends BasicController {
 		if (slot == BattleSlot.PLAYER_PRIMARY) {
 			addText("That's enough, %s", playerPokemon.label)
 			updatePlayerPokemon(newPokemon)
-			newPokemon?.ability?.switchInFunction.apply(this, newPokemon)
+			newPokemon?.ability?.switchInFunction?.apply(this, newPokemon)
 			useMove(opponentPokemon, opponentMove, opponentTargets, [
 				if (!checkForBattleEnd()) {
 					doEndOfRound([enableButtons()])
@@ -389,7 +393,7 @@ class BattleViewController extends BasicController {
 			])
 		}
 		
-		val pokemonInOrder = battleCalculator.getInOrderOfSpeed(playerPokemon, opponentPokemon)
+		val pokemonInOrder = battleCalculator.getInOrderOfSpeed(getAllPokemon())
 		doEndOfRound(pokemonInOrder.remove(0), pokemonInOrder, callback)
 	}
 	
@@ -537,8 +541,6 @@ class BattleViewController extends BasicController {
 			showAbility(user, user.ability)
 		}
 		
-		
-		
 		val damage = battleCalculator.getDamage(user, move, target)
 		if (damage !== null) {
 			val typeModifier = battleCalculator.getTypeModifier(target, move)
@@ -569,6 +571,7 @@ class BattleViewController extends BasicController {
 		if (target.hp == 0) {
 			addText("%s has fainted", target.label)
 			if (user == playerPokemon && target == opponentPokemon) {
+				c.pokemonService.updatePokedexes(target, PokedexEntryStatus.SEEN)
 				assignXp(target, callback)
 			} else {
 				callback.run()

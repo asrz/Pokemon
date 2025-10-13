@@ -39,10 +39,6 @@ class Pokedex {
 		]
 	}
 	
-	def getByNumber(int number) {
-		return entries.get(number)
-	}
-	
 	def addEntry(PokemonSpeciesDAO pokemonSpeciesDao, int number, PokedexEntryStatus status, String description) {
 		val entry = new PokedexEntry(pokemonSpeciesDao, description, status, number)
 		entries.put(number, entry)
@@ -69,6 +65,29 @@ class Pokedex {
 			} else {
 				val index = number - min
 				entriesAsList.set(index, entry)
+			}
+		}
+	}
+	
+	def updateEntries(List<PokemonSpeciesDAO> speciesDaos, PokedexEntryStatus status, String languageName) {
+		for (speciesDao : speciesDaos) {
+			val Integer number = speciesDao.pokedexNumbers.findFirst[it.pokedex.name == pokedexDaoName]?.entryNumber
+			if (number !== null) { 
+				val entry = getEntryByNumber(number)
+				if (entry !== null) {
+					if (entry.status.ordinal() < status.ordinal()) {
+						entry.status = status
+						entriesAsList.triggerChange(entriesAsList.indexOf(entry))
+					}
+				} else {
+					if (generation !== null) {
+						val description = speciesDao.flavorTextEntries.findLast[PokemonUtil.getGenerationFromVersionOrVersionGroup(version.name) == generation && language.name == languageName]?.flavorText
+						addEntry(speciesDao, number, status, description)
+					} else {
+						val description = speciesDao.flavorTextEntries.findLast[language.name == languageName].flavorText
+						addEntry(speciesDao, number, status, description)
+					}
+				}
 			}
 		}
 	}

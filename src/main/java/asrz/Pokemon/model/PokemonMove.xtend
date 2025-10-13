@@ -35,7 +35,13 @@ class PokemonMove extends Entity {
 		val generation = 1 //TODO player.maxGeneration
 		
 		for (MoveLearnMethod learnMethod : moveDetailsByGenerationAndLearnMethod.secondDimensionalKeySet(generation)) {
-			val canonicalMoveDetails = moveDetailsByGenerationAndLearnMethod.get(generation, learnMethod).lastOrNull
+			
+			val canonicalMoveDetails = if (learnMethod == MoveLearnMethod.LEVEL_UP) {
+				moveDetailsByGenerationAndLearnMethod.get(generation, learnMethod).filter[levelLearnedAt > 0].minBy[levelLearnedAt]
+			} else {
+				moveDetailsByGenerationAndLearnMethod.get(generation, learnMethod).lastOrNull
+			}
+			
 			if (canonicalMoveDetails !== null && moveDetailsByGenerationAndLearnMethod.get(maxGeneration, learnMethod) !== null) {
 				result.add(new PokemonMove() => [
 					move = Move.fromApi(moveDAO, languageName)

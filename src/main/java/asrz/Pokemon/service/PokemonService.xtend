@@ -8,12 +8,57 @@ import asrz.Pokemon.pokeAPI.model.pokemon.PokemonDAO
 import asrz.Pokemon.util.PokemonUtil
 import asrz.Pokemon.util.Util
 import com.mongodb.client.model.Filters
+import java.util.HashMap
 import java.util.List
+import java.util.Map
 
 class PokemonService extends BaseService {
 	
 	new(Context context) {
 		super(context)
+	}
+	
+	def Map<String, PokemonSpecies> getPokemonSpeciesByName(List<String> speciesNames) {
+		val pokemonSpecies = database.getPokemonSpecies(Filters.in("name", speciesNames))
+		val pokemonSpeciesDaosByName = pokemonSpecies.toMap[name]
+		
+		val pokemonNames = pokemonSpecies.flatMap[varieties].filter[isDefault].map[pokemon.name]
+		val pokemonDaosByName = database.getPokemon(Filters.in("name", pokemonNames)).toMap[name]
+		
+		val pokemonFormNames = pokemonDaosByName.values.map[forms.head.name]
+		val pokemonFormDaosByName = database.getPokemonForms(Filters.in("name", pokemonFormNames)).toMap[name]
+		
+		val moveNames = pokemonDaosByName.values.flatMap[moves].map[move.name]
+		val moveDaosByName = database.getMoves(Filters.in("name", moveNames)).toMap[name]
+		
+		val abilityNames = pokemonDaosByName.values.flatMap[abilities].map[ability.name]
+		val abilityDaosByName = database.getAbilities(Filters.in("name", abilityNames)).toMap[name]
+		
+		val result = new HashMap<String, PokemonSpecies>
+		
+		speciesNames.forEach[ speciesName |
+			val speciesDao = pokemonSpeciesDaosByName.get(speciesName)
+			if (speciesDao === null) {
+				println(speciesName)
+			}
+			val pokemonDao = pokemonDaosByName.get(speciesDao.varieties.findFirst[isDefault].pokemon.name)
+			val formDao = pokemonFormDaosByName.get(pokemonDao.forms.head.name)
+			val moveDaos = pokemonDao.moves.map[moveDaosByName.get(move.name)]
+			val abilityDaos = pokemonDao.abilities.filter[!hidden].map[abilityDaosByName.get(ability.name)].toList
+			val hiddenAbilityDao = abilityDaosByName.get(pokemonDao.abilities.findFirst[hidden]?.ability?.name)
+			
+			result.put(speciesDao.name, new PokemonSpecies(
+				speciesDao,
+				formDao,
+				pokemonDao, 
+				moveDaos, 
+				abilityDaos,
+				hiddenAbilityDao,
+				player.languageName
+			))
+		]
+		
+		return result
 	}
 	
 	def PokemonSpecies getPokemonSpecies(PokemonDAO pokemonDAO) {
@@ -57,23 +102,10 @@ class PokemonService extends BaseService {
 	}
 	
 	def void updatePokedexes(List<Pokemon> pokemons, PokedexEntryStatus status) {
-		val allSpecies = database.getPokemonSpecies(Filters.in("id", pokemons.map[species.pokemonSpeciesDaoId]))
+		val allSpeciesDaos = database.getPokemonSpecies(Filters.in("id", pokemons.map[species.pokemonSpeciesDaoId]))
 		
 		for (pokedex : player.pokedexes) {
-			for (species : allSpecies) {
-				val Integer number = species.pokedexNumbers.findFirst[it.pokedex.name == pokedex.pokedexDaoName]?.entryNumber
-				if (number !== null && pokedex.getByNumber(number) === null) {
-					if (pokedex.generation !== null) {
-						println(pokedex.name + " " + species.name)
-						println(species.flavorTextEntries.filter[language.name == player.languageName].map[version.name].sortBy[PokemonUtil.getGenerationFromVersionOrVersionGroup(it)].join('\n'))
-						val description = species.flavorTextEntries.findLast[PokemonUtil.getGenerationFromVersionOrVersionGroup(version.name) == pokedex.generation && language.name == player.languageName]?.flavorText
-						pokedex.addEntry(species, number, status, description)
-					} else {
-						val description = species.flavorTextEntries.findLast[language.name == player.languageName].flavorText
-						pokedex.addEntry(species, number, status, description)
-					}
-				}
-			}
+			pokedex.updateEntries(allSpeciesDaos, status, player.languageName)
 		}
 	}
 	

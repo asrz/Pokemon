@@ -13,6 +13,7 @@ import asrz.Pokemon.model.enums.Weather
 import java.util.List
 
 import static asrz.Pokemon.model.enums.Stat.*
+import asrz.Pokemon.model.enums.MoveDamageClass
 
 class BattleCalculator {
 
@@ -27,18 +28,26 @@ class BattleCalculator {
 			return null
 		}
 		
+		val doesMoveCrit = doesMoveCrit(user, move, target)
+		
 		val level = user.level
-		val critModifier = getCritDamageModifier(user, move, target)
+		val critModifier = getCritDamageModifier(user, move, target, doesMoveCrit)
 		val power = move.power
-		val attackStat = getAttackStat(user, move)
-		val defenseStat = getDefenseStat(target, move)
+		val attackStat = getAttackStat(user, move, doesMoveCrit)
+		val defenseStat = getDefenseStat(target, move, doesMoveCrit)
 		
 		val stabModifier = getStabModifier(user, move)
 		val typeModifier = getTypeModifier(target, move)
 		val abilityModifier = user.ability?.getDamageModifier(user, move, target) ?: 1.0
 		val randomModifier = Util.randomInt(85, 100) as double / 100.0
+		val targetsModifier = battleViewController.getTargets(user, move, target).size > 1 ? 0.75 : 1.0
+		val burnModifier = getBurnModifier(user, move, target)
+		val otherModifier = 1.0 //TODO
+		val weatherModifier = getWeatherModifier(user, move, target)
+		val glaiveRushModifier = 1.0 //TODO
+		val zMoveModifier = 1.0 //TODO
 		
-		val damageD = (((((2 * level * critModifier) / 5) + 2) * power * attackStat / defenseStat) / 50 + 2) * stabModifier * typeModifier * abilityModifier * randomModifier
+		val damageD = (((((2 * level) / 5) + 2) * power * (attackStat / defenseStat)) / 50 + 2) * targetsModifier * weatherModifier * glaiveRushModifier * critModifier * stabModifier * typeModifier * abilityModifier * burnModifier * otherModifier * zMoveModifier * randomModifier
 		
 		val damageDealt = Math.min(Math.floor(damageD), target.hp) as int
 		
@@ -49,6 +58,40 @@ class BattleCalculator {
 		}
 		
 		return damageDealt
+	}
+	
+	def getWeatherModifier(Pokemon user, Move move, Pokemon target) {
+		if (!battleViewController.getAllPokemon().filter[Util.in(it?.ability?.abilityDaoName, "cloud-nine", "air-lock")].empty) {
+			return 1.0
+		}
+		
+		if (battleViewController.weather == Weather.RAIN) {
+			if (move.type == Type.WATER) {
+				return 1.5
+			} else if (move.type == Type.FIRE) {
+				return 0.5
+			}
+		} else if (battleViewController.weather == Weather.HARSH_SUNLIGHT) {
+			if (move.type == Type.FIRE || move.moveDaoName == 'hydro-steam') {
+				return 1.5
+			} else if (move.type == Type.WATER) {
+				return 0.5
+			}
+		}
+		
+		return 1.0
+	}
+	
+	def double getBurnModifier(Pokemon user, Move move, Pokemon target) {
+		if (move.moveDaoName == 'facade') {
+			return 1.0
+		}
+		
+		if (user.ailment == StatusAilment.BURN && move.damageClass == MoveDamageClass.PHYSICAL && user?.ability?.abilityDaoName != 'guts') {
+			return 0.75
+		}
+		
+		return 1.0
 	}
 	
 	def double getTypeModifier(Pokemon pokemon, Move move) {
@@ -74,18 +117,18 @@ class BattleCalculator {
 		return 1.0
 	}
 	
-	def getDefenseStat(Pokemon pokemon, Move move) {
+	def getDefenseStat(Pokemon pokemon, Move move, boolean doesMoveCrit) {
 		switch(move.damageClass) {
-			case PHYSICAL: return pokemon.effectiveDefense
-			case SPECIAL: return pokemon.effectiveSpecialDefense
+			case PHYSICAL: return pokemon.getEffectiveDefense(doesMoveCrit)
+			case SPECIAL: return pokemon.getEffectiveSpecialDefense(doesMoveCrit)
 			case STATUS: return null
 		}
 	}
 	
-	def getAttackStat(Pokemon pokemon, Move move) {
+	def getAttackStat(Pokemon pokemon, Move move, boolean doesMoveCrit) {
 		switch(move.damageClass) {
-			case PHYSICAL: return pokemon.effectiveAttack
-			case SPECIAL: return pokemon.effectiveSpecialAttack
+			case PHYSICAL: return pokemon.getEffectiveAttack(doesMoveCrit)
+			case SPECIAL: return pokemon.getEffectiveSpecialAttack(doesMoveCrit)
 			case STATUS: return null
 		}
 	}
@@ -99,20 +142,20 @@ class BattleCalculator {
 		val double evasionModifier = 1.0 / target.getTempStatModifier(EVASION)
 		
 		val accuracy = move.accuracy * accuracyModifier * evasionModifier
-		val offensiveAccuracyModifier = user?.ability?.offensiveAccuracyModifierFunction.apply(user, move, target) ?: 1d
-		val defensiveAccuracyModifier = target?.ability?.defensiveAccuracyModifierFunction.apply(user, move, target, weather) ?: 1d
-		val offAllyAccuracyModifier = userAlly?.ability?.spectatorAccuracyModifierFunction.apply(user, move, target) ?: 1d
-		val defAllyAccuracyModifier = targetAlly?.ability?.spectatorAccuracyModifierFunction.apply(user, move, target) ?: 1d
+		val offensiveAccuracyModifier = user?.ability?.offensiveAccuracyModifierFunction?.apply(user, move, target) ?: 1d
+		val defensiveAccuracyModifier = target?.ability?.defensiveAccuracyModifierFunction?.apply(user, move, target, weather) ?: 1d
+		val offAllyAccuracyModifier = userAlly?.ability?.spectatorAccuracyModifierFunction?.apply(user, move, target) ?: 1d
+		val defAllyAccuracyModifier = targetAlly?.ability?.spectatorAccuracyModifierFunction?.apply(user, move, target) ?: 1d
 		
 		val totalAccuracy = accuracy * offensiveAccuracyModifier * defensiveAccuracyModifier * offAllyAccuracyModifier * defAllyAccuracyModifier
 		
 		return Util.randomPercentage <= totalAccuracy
 	}
 	
-	def double getCritDamageModifier(Pokemon user, Move move, Pokemon target) {
+	def double getCritDamageModifier(Pokemon user, Move move, Pokemon target, boolean doesMoveCrit) {
 		var critModifier = 1.0
 		
-		if (doesMoveCrit(user, move, target)) {
+		if (doesMoveCrit) {
 			return 1.5
 		}
 		
@@ -122,7 +165,7 @@ class BattleCalculator {
 	def boolean doesMoveCrit(Pokemon user, Move move, Pokemon target) {
 		var doesCrit = false
 		
-		val critBoosts = user.tempStatChanges.get(Stat.CRIT_RATE)
+		val critBoosts = user.tempStatChanges.getOrDefault(Stat.CRIT_RATE, 0)
 		if (critBoosts == 0) {
 			doesCrit = Util.randomInt(1, 24) == 1
 		} else if (critBoosts == 1) {
@@ -133,8 +176,8 @@ class BattleCalculator {
 			doesCrit = true
 		}
 		
-		val offensiveMoveCrits = user?.ability?.offensiveMoveCritFunction.apply(user, move, target) ?: doesCrit
-		val defensiveMoveCrits = user?.ability?.defensiveMoveCritFunction.apply(user, move, target) ?: doesCrit
+		val offensiveMoveCrits = user?.ability?.offensiveMoveCritFunction?.apply(user, move, target) ?: doesCrit
+		val defensiveMoveCrits = user?.ability?.defensiveMoveCritFunction?.apply(user, move, target) ?: doesCrit
 		
 		doesCrit = doesCrit && offensiveMoveCrits && defensiveMoveCrits
 		
@@ -173,29 +216,29 @@ class BattleCalculator {
 	def flinchApplies(Pokemon user, Move move, Pokemon target) {
 		var flinchChance = move.flinchChance
 		
-		flinchChance = user.ability.flinchChanceFunction?.apply(user, move, target, flinchChance) ?: flinchChance
+		flinchChance = user?.ability?.flinchChanceFunction?.apply(user, move, target, flinchChance) ?: flinchChance
 		
 		return Util.randomPercentage <= flinchChance
 	}
 	
-	def List<Pokemon> getInOrderOfSpeed(Pokemon... pokemon) {
+	def List<Pokemon> getInOrderOfSpeed(List<Pokemon> pokemon) {
 		return pokemon.sortBy[getEffectiveSpeed]
 	}
 	
-	def getEffectiveAttack(Pokemon pokemon) {
-		return pokemon.getEffectiveStat(pokemon.attack, Stat.ATTACK)
+	def getEffectiveAttack(Pokemon pokemon, boolean doesMoveCrit) {
+		return pokemon.getEffectiveStat(pokemon.attack, Stat.ATTACK, doesMoveCrit)
 	}
 	
-	def getEffectiveDefense(Pokemon pokemon) {
-		return pokemon.getEffectiveStat(pokemon.defense, DEFENSE)
+	def getEffectiveDefense(Pokemon pokemon, boolean doesMoveCrit) {
+		return pokemon.getEffectiveStat(pokemon.defense, DEFENSE, doesMoveCrit)
 	}
 	
-	def getEffectiveSpecialAttack(Pokemon pokemon) {
-		return pokemon.getEffectiveStat(pokemon.specialAttack, SPECIAL_ATTACK)
+	def getEffectiveSpecialAttack(Pokemon pokemon, boolean doesMoveCrit) {
+		return pokemon.getEffectiveStat(pokemon.specialAttack, SPECIAL_ATTACK, doesMoveCrit)
 	}
 	
-	def getEffectiveSpecialDefense(Pokemon pokemon) {
-		return pokemon.getEffectiveStat(pokemon.specialDefense, SPECIAL_DEFENSE)
+	def getEffectiveSpecialDefense(Pokemon pokemon, boolean doesMoveCrit) {
+		return pokemon.getEffectiveStat(pokemon.specialDefense, SPECIAL_DEFENSE, doesMoveCrit)
 	}
 	
 	def getEffectiveSpeed(Pokemon pokemon) {

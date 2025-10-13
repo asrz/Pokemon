@@ -31,6 +31,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.VBox
 import xtendfx.beans.FXBindable
+import asrz.Pokemon.util.Timer
 
 @FXBindable
 class RegionsTab extends VBox implements IController  {
@@ -50,6 +51,8 @@ class RegionsTab extends VBox implements IController  {
 	}
 	
 	override initialize() {
+		val timer = new Timer()
+		
 		val regions = database.getRegions(Filters.empty)
 		val locations = database.getLocations(Filters.ne("region", null))
 		val locationsByRegionName = locations.groupBy[region.name]
@@ -73,6 +76,8 @@ class RegionsTab extends VBox implements IController  {
 				]
 			}
 		}
+		
+		timer.endStep("regions")
 	}
 	
 	def onClickEncounterButton(String locationName) {
@@ -148,13 +153,9 @@ class RegionsTab extends VBox implements IController  {
 			
 			for (pokemonEncounterDao : encounters) {
 				val pokemonDao = pokemonDaosByName.get(pokemonEncounterDao.pokemon.name)
-				println(pokemonDao.name)
 				val pokemonSpeciesDao = pokemonSpeciesByName.get(pokemonDao.species.name)
-				println(pokemonSpeciesDao.name)
 				val regionalPokedexEntryNumber = pokemonSpeciesDao.pokedexNumbers.findFirst[pokedex.name == regionalPokedex.pokedexDaoName]
-				println(regionalPokedexEntryNumber)
 				val pokedexEntry = regionalPokedex.getEntryByNumber(regionalPokedexEntryNumber.entryNumber)
-				println(pokedexEntry)
 				
 				val status = pokedexEntry?.status ?: PokedexEntryStatus.UNKNOWN
 				

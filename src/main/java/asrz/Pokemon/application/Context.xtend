@@ -48,10 +48,10 @@ class Context {
 		pokemonService = new PokemonService(this)
 		playerService = new PlayerService(this)
 		
-		//val kantoPokedexDao = database.getPokedexes(Filters.eq("name", "kanto")).first
-		val pokedexes = database.getPokedexes(Filters.empty)
+		val kantoPokedexDao = database.getPokedexes(Filters.eq("name", "kanto")).first
+//		val pokedexes = database.getPokedexes(Filters.empty)
 		player = new Player() => [
-			it.pokedexes.addAll(pokedexes.map[pokedex | Pokedex.fromApi(pokedex, 'en')])
+			it.pokedexes.addAll(pokedexes.map[pokedex | Pokedex.fromApi(kantoPokedexDao, 'en')])
 		]
 	}
 	

@@ -427,7 +427,21 @@ class Pokemon extends Entity implements ILabeled {
 	}
 	
 	def int getEffectiveStat(int statValue, Stat stat) {
-		return Math.floor(statValue * getTempStatModifier(stat)) as int
+		return getEffectiveStat(statValue, stat, false)
+	}
+	
+	def int getEffectiveStat(int statValue, Stat stat, boolean doesMoveCrit) {
+		var tempStatModifier = getTempStatModifier(stat)
+		
+		if (doesMoveCrit) {
+			if (Util.in(stat, ATTACK, SPECIAL_ATTACK) && tempStatModifier < 1) {
+				tempStatModifier = 1
+			} else if (Util.in(stat, DEFENSE, SPECIAL_DEFENSE) && tempStatModifier > 1) {
+				tempStatModifier = 1
+			}
+		}
+		
+		return Math.floor(statValue * tempStatModifier) as int
 	}
 	
 	def healHpAndStatuses() {
