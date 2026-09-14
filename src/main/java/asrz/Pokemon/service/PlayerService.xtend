@@ -87,7 +87,6 @@ class PlayerService extends BaseService {
 	}
 	
 	def deleteGame(Player player) {
-		println("deleteGame: " + player.id)
 		database.deletePlayers(Filters.eq("_id", player.id))
 		player.team.populatePokemonIds()
 		database.deletePokemon(Filters.in("_id", player.team.allPokemonIds))

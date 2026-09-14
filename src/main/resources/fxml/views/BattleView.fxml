@@ -11,21 +11,18 @@
 	<spacing>10</spacing>
 	<AnchorPane prefHeight="400" prefWidth="600">
 		<VBox AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10">
-			<HpBar fx:id="opponentHpBar" />
+			<VBox fx:id="opponentHpBars" />
 			<Label text="${controller.opponentPokemon.tempStatChangesLabel}" />
 		</VBox>
 		<GridPane fx:id="battleMenu" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" hgap="2" vgap="2">
-			<Label text="${controller.playerPokemon.tempStatChangesLabel}" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
-			<HpBar  fx:id="playerHpBar" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" />
-			<Label text="${controller.playerPokemon.hpLabel}" styleClass="battleButton" GridPane.rowIndex="3" GridPane.columnIndex="0" fx:id="hpLabel"/>
+			<VBox  fx:id="playerHpBars" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" />
 			<Button text="ITEMS" GridPane.rowIndex="3" GridPane.columnIndex="1" fx:id="itemButton" onAction="#onItemButton" styleClass="battleButton"/>
 			<Button text="PKMN" GridPane.rowIndex="4" GridPane.columnIndex="0" fx:id="pokemonButton" onAction="#onPokemonButton" styleClass="battleButton"/>
 			<Button text="RUN" GridPane.rowIndex="4" GridPane.columnIndex="1" fx:id="runButton" onAction="#onRunButton" styleClass="battleButton"/>
-			<XpBar fx:id="playerXpBar" pokemon="$controller.playerPokemon" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2" />
 		</GridPane>
 		
-		<ImageView fitHeight="300" preserveRatio="true" fx:id="pokemonSprite"  AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"/>
-		<ImageView fitHeight="300" preserveRatio="true" fx:id="opponentSprite" AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" />
+		<HBox prefHeight="300" fx:id="playerPokemonSprites"  AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"/>
+		<HBox prefHeight="300" fx:id="opponentPokemonSprites" AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" />
 	</AnchorPane>
 	<MoveButtons fx:id="moveButtons" />
 	<ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" prefViewportHeight="150" vvalue="1" >

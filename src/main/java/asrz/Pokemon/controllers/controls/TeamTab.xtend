@@ -9,7 +9,7 @@ import asrz.Pokemon.model.enums.BattleSlot
 import asrz.Pokemon.model.enums.MenuMode
 import asrz.Pokemon.util.Util
 import java.io.IOException
-import java.util.function.BiConsumer
+import java.util.function.Consumer
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.layout.GridPane
@@ -37,7 +37,7 @@ class TeamTab extends GridPane implements IController {
 	
 	BattleSlot battleSlot
 	
-	BiConsumer<BattleSlot, Pokemon> switchCallback
+	Consumer<Pokemon> switchCallback
 	
 	new() {
 		this.player = IController.super.getPlayer()
@@ -62,7 +62,7 @@ class TeamTab extends GridPane implements IController {
 	
 	def void handleSwitchButton(TeamButton teamButton) {
 		if (menuMode == MenuMode.BATTLE) {
-			Application.setScene(SceneHandle.BATTLE_VIEW, [], [ switchCallback.accept(battleSlot, teamButton.pokemon) ])
+			Application.setScene(SceneHandle.BATTLE_VIEW, [], [ switchCallback.accept(teamButton.pokemon) ])
 		}
 	}
 }

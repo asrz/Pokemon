@@ -28,6 +28,8 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.VBox
 import xtendfx.beans.FXBindable
 import asrz.Pokemon.application.SceneHandle
+import asrz.Pokemon.util.DialogUtil
+import asrz.Pokemon.model.Pokemon
 
 @FXBindable
 class BagTab extends VBox implements IController  {
@@ -44,6 +46,8 @@ class BagTab extends VBox implements IController  {
 	ItemBag itemBag
 	
 	MenuMode menuMode
+	
+	Pokemon user
 	
 	new() {
 		val FXMLLoader fxmlLoader = new FXMLLoader(class.getResource("/fxml/controls/BagTab.fxml"))
@@ -96,7 +100,12 @@ class BagTab extends VBox implements IController  {
 				}
 			}
 			
-			Application.setScene(SceneHandle.BATTLE_VIEW, [], [c.battleViewController.useItem(stack.item)])
+			if (stack.item.requiresTarget()) {
+				val battleslot = DialogUtil.chooseTarget(c.battleViewController.pokemonByBattleSlot, c.battleViewController.battleSlots.filter[isPlayer].toList)
+				val target = c.battleViewController.pokemonByBattleSlot.get(battleslot)
+				Application.setScene(SceneHandle.BATTLE_VIEW, [], [c.battleViewController.useItem(stack.item, user, target, [])])
+			}
+			
 		}
 	}
 	

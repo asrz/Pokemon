@@ -2,6 +2,8 @@ package asrz.Pokemon.model.enums;
 
 import java.util.List;
 
+import asrz.Pokemon.model.Move;
+import asrz.Pokemon.model.Pokemon;
 import asrz.Pokemon.util.Util;
 
 public enum Type {
@@ -137,5 +139,34 @@ public enum Type {
 			case LEECH_SEED: return this == GRASS;
 			default: return false;
 		}
+	}
+	
+	public static double getDamageModifier(Type offensiveType, List<Type> defensiveTypes) {
+		double modifier = 1.0;
+		for (Type type : defensiveTypes) {
+			if (type == null) {
+				//pass
+			} else if (type.isImmuneTo(offensiveType)) {
+				modifier *= 0;
+			} else if (type.isResistantTo(offensiveType)) {
+				modifier *= 0.5;
+			} else if (type.isWeakTo(offensiveType)) {
+				modifier *= 2.0;
+			}
+		}
+		
+		return modifier;
+	}
+	
+	public boolean isSuperEffective(List<Type> types) {
+		double damageModifier = getDamageModifier(this, types);
+		
+		return damageModifier > 1.0;
+	}
+	
+	public boolean isNotVeryEffective(List<Type> types) {
+		double damageModifier = getDamageModifier(this, types);
+		
+		return damageModifier < 1.0;
 	}
 }

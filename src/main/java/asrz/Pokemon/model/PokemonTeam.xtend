@@ -60,6 +60,11 @@ class PokemonTeam extends Entity {
 	}
 	
 	@BsonIgnore
+	def getSecondLivingPokemon() {
+		return getAllPokemon().filter[hp > 0].drop(1).head
+	}
+	
+	@BsonIgnore
 	def isFull() {
 		return getAllPokemon.size == 6
 	}

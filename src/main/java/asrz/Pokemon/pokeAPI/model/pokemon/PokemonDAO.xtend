@@ -34,6 +34,10 @@ class PokemonDAO extends NamedPokeApiResource {
 	NamedApiResource<PokemonSpeciesDAO> species
 	List<PokemonStatDAO> stats
 	List<TypeDAO> types
+	
+	def int getBaseStatTotal() {
+		return stats.map[baseStat].reduce([a,b | a+b])
+	}
 }
 
 @MongoPojo

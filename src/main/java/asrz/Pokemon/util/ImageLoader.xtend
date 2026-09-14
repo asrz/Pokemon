@@ -17,15 +17,21 @@ class ImageLoader {
 		return loadImage(url, false)
 	}
 	
+	def static loadLocalImage(String url) {
+		return loadImage(url, false)
+	}
+	
 	private def static Image loadImage(String url, boolean localOnly) {
 		if (url === null) {
 			return null
 		}
 		
+		val srcFilepathPrefix = Util.list("src", "main", "resources", "img")
+		val targetFilepathPrefix = Util.list("target", "classes", "img")
+		var filepathSuffix = url.split("/")
+		
 		if (url.startsWith(URL_BASE)) {
-			val srcFilepathPrefix = Util.list("src", "main", "resources", "img")
-			val targetFilepathPrefix = Util.list("target", "classes", "img")
-			val filepathSuffix = url.substring(URL_BASE.length).split("/")
+			filepathSuffix = url.substring(URL_BASE.length).split("/")
 			
 			val srcFilepath = (srcFilepathPrefix + filepathSuffix).join(File.separator)
 			val srcFile = new File(srcFilepath)
@@ -46,10 +52,9 @@ class ImageLoader {
 					throw new RuntimeException(ioe)
 				}
 			}
-			
-			
-			return new Image(ImageLoader.getResource("/img/" + filepathSuffix.join('/')).toString)
 		}
+		
+		return new Image(ImageLoader.getResource("/img/" + filepathSuffix.join('/')).toString)
 	}
 	
 	def static loadSilhouetteImage(PokemonSpritesDAO spritesDao) {

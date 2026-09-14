@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+
+<fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
+	<text>Kanto</text>
+	<StackPane>
+		<ImageView fx:id="kantoImageView" StackPane.alignment="CENTER_LEFT"/>
+		<AnchorPane>
+			<Button fx:id="palletTownButton"       AnchorPane.leftAnchor="124" AnchorPane.topAnchor="323" opacity="0.5" prefHeight="26"  prefWidth="25" />
+			<Button fx:id="viridianCityButton"     AnchorPane.leftAnchor="124" AnchorPane.topAnchor="248" opacity="0.5" prefHeight="26"  prefWidth="25" />
+			<Button fx:id="pewterCityButton"       AnchorPane.leftAnchor="124" AnchorPane.topAnchor="148" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="ceruleanCityButton"     AnchorPane.leftAnchor="373" AnchorPane.topAnchor="124" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="saffronCityButton"      AnchorPane.leftAnchor="373" AnchorPane.topAnchor="198" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="vermillionCityButton"   AnchorPane.leftAnchor="373" AnchorPane.topAnchor="273" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="lavendarTownButton"     AnchorPane.leftAnchor="473" AnchorPane.topAnchor="198" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="celadonCityButton"      AnchorPane.leftAnchor="298" AnchorPane.topAnchor="198" opacity="0.5" prefHeight="25"  prefWidth="26" />
+			<Button fx:id="fuchsiaCityButton"      AnchorPane.leftAnchor="324" AnchorPane.topAnchor="348" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="pewterCityButton"       AnchorPane.leftAnchor="124" AnchorPane.topAnchor="148" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="cinnabarIslandButton"   AnchorPane.leftAnchor="124" AnchorPane.topAnchor="397" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="indigoPlateauButton"    AnchorPane.leftAnchor="74"  AnchorPane.topAnchor="124" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="diglettsCaveButton"     AnchorPane.leftAnchor="124" AnchorPane.topAnchor="173" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="diglettsCaveButton2"    AnchorPane.leftAnchor="399" AnchorPane.topAnchor="273" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="viridianForestButton"   AnchorPane.leftAnchor="124" AnchorPane.topAnchor="198" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="mtMoonButton"           AnchorPane.leftAnchor="249" AnchorPane.topAnchor="124" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="powerPlantButton"       AnchorPane.leftAnchor="473" AnchorPane.topAnchor="124" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="rockTunnelButton"       AnchorPane.leftAnchor="473" AnchorPane.topAnchor="149" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="seafoamIslandsButton"   AnchorPane.leftAnchor="224" AnchorPane.topAnchor="397" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="ceruleanCaveButton"     AnchorPane.leftAnchor="349" AnchorPane.topAnchor="99"  opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="ssAnneButton"           AnchorPane.leftAnchor="373" AnchorPane.topAnchor="297" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="safariZoneButton"       AnchorPane.leftAnchor="324" AnchorPane.topAnchor="323" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="kantoRoute1Button"      AnchorPane.leftAnchor="124" AnchorPane.topAnchor="274" opacity="0.5" prefHeight="49"  prefWidth="25" />
+			<Button fx:id="kantoRoute2Button"      AnchorPane.leftAnchor="124" AnchorPane.topAnchor="223" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="kantoRoute4Button"      AnchorPane.leftAnchor="274" AnchorPane.topAnchor="124" opacity="0.5" prefHeight="26"  prefWidth="100" />
+			<Button fx:id="kantoRoute4Button2"     AnchorPane.leftAnchor="224" AnchorPane.topAnchor="124" opacity="0.5" prefHeight="26"  prefWidth="25" />
+			<Button fx:id="kantoRoute3Button"      AnchorPane.leftAnchor="149" AnchorPane.topAnchor="148" opacity="0.5" prefHeight="26"  prefWidth="100" />
+			<Button fx:id="kantoRoute5Button"      AnchorPane.leftAnchor="373" AnchorPane.topAnchor="150" opacity="0.5" prefHeight="49"  prefWidth="25" />
+			<Button fx:id="kantoRoute6Button"      AnchorPane.leftAnchor="373" AnchorPane.topAnchor="224" opacity="0.5" prefHeight="49"  prefWidth="25" />
+			<Button fx:id="kantoRoute7Button"      AnchorPane.leftAnchor="324" AnchorPane.topAnchor="198" opacity="0.5" prefHeight="25"  prefWidth="49" />
+			<Button fx:id="kantoRoute8Button"      AnchorPane.leftAnchor="399" AnchorPane.topAnchor="198" opacity="0.5" prefHeight="25"  prefWidth="74" />
+			<Button fx:id="kantoRoute9Button"      AnchorPane.leftAnchor="399" AnchorPane.topAnchor="124" opacity="0.5" prefHeight="25"  prefWidth="74" />
+			<Button fx:id="kantoRoute10Button"     AnchorPane.leftAnchor="473" AnchorPane.topAnchor="174" opacity="0.5" prefHeight="25"  prefWidth="25" />
+			<Button fx:id="kantoRoute11Button"     AnchorPane.leftAnchor="424" AnchorPane.topAnchor="273" opacity="0.5" prefHeight="25"  prefWidth="49" />
+			<Button fx:id="kantoRoute12Button"     AnchorPane.leftAnchor="473" AnchorPane.topAnchor="224" opacity="0.5" prefHeight="99"  prefWidth="25" />
+			<Button fx:id="kantoRoute13Button"     AnchorPane.leftAnchor="424" AnchorPane.topAnchor="323" opacity="0.5" prefHeight="25"  prefWidth="74" />
+			<Button fx:id="kantoRoute14Button"     AnchorPane.leftAnchor="398" AnchorPane.topAnchor="323" opacity="0.5" prefHeight="50"  prefWidth="26" />
+			<Button fx:id="kantoRoute15Button"     AnchorPane.leftAnchor="349" AnchorPane.topAnchor="348" opacity="0.5" prefHeight="25"  prefWidth="49" />
+			<Button fx:id="kantoRoute16Button"     AnchorPane.leftAnchor="224" AnchorPane.topAnchor="198" opacity="0.5" prefHeight="25"  prefWidth="74" />
+			<Button fx:id="kantoRoute17Button"     AnchorPane.leftAnchor="199" AnchorPane.topAnchor="198" opacity="0.5" prefHeight="175" prefWidth="25" />
+			<Button fx:id="kantoRoute18Button"     AnchorPane.leftAnchor="224" AnchorPane.topAnchor="348" opacity="0.5" prefHeight="25"  prefWidth="99" />
+			<Button fx:id="kantoRoute19Button"     AnchorPane.leftAnchor="324" AnchorPane.topAnchor="373" opacity="0.5" prefHeight="49"  prefWidth="25" />
+			<Button fx:id="kantoRoute20Button"     AnchorPane.leftAnchor="150" AnchorPane.topAnchor="397" opacity="0.5" prefHeight="25"  prefWidth="74" />
+			<Button fx:id="kantoRoute20Button2"    AnchorPane.leftAnchor="249" AnchorPane.topAnchor="397" opacity="0.5" prefHeight="25"  prefWidth="75" />
+			<Button fx:id="kantoRoute21Button"     AnchorPane.leftAnchor="124" AnchorPane.topAnchor="349" opacity="0.5" prefHeight="49"  prefWidth="25" />
+			<Button fx:id="kantoRoute22Button"     AnchorPane.leftAnchor="74"  AnchorPane.topAnchor="248" opacity="0.5" prefHeight="26"  prefWidth="50" />
+			<Button fx:id="kantoRoute23Button"     AnchorPane.leftAnchor="74"  AnchorPane.topAnchor="172" opacity="0.5" prefHeight="76"  prefWidth="26" />
+			<Button fx:id="kantoRoute24Button"     AnchorPane.leftAnchor="373" AnchorPane.topAnchor="74"  opacity="0.5" prefHeight="49"  prefWidth="26" />
+			<Button fx:id="kantoRoute25Button"     AnchorPane.leftAnchor="399" AnchorPane.topAnchor="74"  opacity="0.5" prefHeight="25"  prefWidth="49" />
+			<Button fx:id="kantoVictoryRoadButton" AnchorPane.leftAnchor="74"  AnchorPane.topAnchor="148" opacity="0.5" prefHeight="25"  prefWidth="26" />
+		</AnchorPane>
+	</StackPane>
+</fx:root>

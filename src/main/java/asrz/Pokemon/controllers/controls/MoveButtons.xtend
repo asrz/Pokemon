@@ -28,7 +28,6 @@ class MoveButtons extends GridPane implements IController {
 	MoveButton moveButton_4
 	
 	Pokemon activePokemon
-	Pokemon opponentPokemon
 	
 	Consumer<MoveButton> moveButtonHandler
 	

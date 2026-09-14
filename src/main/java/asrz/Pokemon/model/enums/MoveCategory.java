@@ -1,5 +1,7 @@
 package asrz.Pokemon.model.enums;
 
+import asrz.Pokemon.util.Util;
+
 public enum MoveCategory {
 	
 	DAMAGE("damage"),
@@ -8,8 +10,8 @@ public enum MoveCategory {
 	HEAL("heal"),
 	DAMAGE_AILMENT("damage+ailment"),
 	SWAGGER("swagger"),
-	DAMAGE_LOWER("damage+lower"),
-	DAMAGE_RAISE("damage+raise"),
+	DAMAGE_LOWER("damage+lower"), //this just means the move's stat changes affect the target
+	DAMAGE_RAISE("damage+raise"), //this just means the move's stat changes affect the user
 	DAMAGE_HEAL("damage+heal"),
 	OHKO("ohko"),
 	WHOLE_FIELD_EFFECT("whole-field-effect"),
@@ -39,6 +41,10 @@ public enum MoveCategory {
 		}
 		
 		throw new RuntimeException("Unknown MoveCategory apiString: " + apiString);
+	}
+	
+	public boolean isDamage() {
+		return Util.in(this, DAMAGE, DAMAGE_AILMENT, DAMAGE_LOWER, DAMAGE_RAISE, DAMAGE_HEAL);
 	}
 
 }

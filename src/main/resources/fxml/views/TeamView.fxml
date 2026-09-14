@@ -9,4 +9,5 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="asrz.Pokemon.controllers.views.TeamViewController">
 	<TeamTab fx:id="teamTab" />
+	<Button fx:id="cancelButton" text="Cancel"/>
 </VBox>

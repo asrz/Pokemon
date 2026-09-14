@@ -9,6 +9,7 @@ public enum SceneHandle {
 	BAG_VIEW("/fxml/views/BagView.fxml"),
 	TEAM_VIEW("/fxml/views/TeamView.fxml"),
 	POKEDEX_ENTRY_VIEW("/fxml/views/PokedexEntryView.fxml"),
+	POKEMON_ENCOUNTERS_VIEW("/fxml/views/PokemonEncountersView.fxml"),
 	;
 	
 	private String fxmlPath;

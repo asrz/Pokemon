@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="asrz.Pokemon.controllers.views.PokemonEncountersViewController" fx:id="root" prefWidth="800" prefHeight="600">
+	<TabPane fx:id="tabPane">
+	
+	</TabPane>
+	<Button fx:id="backButton" onAction="#onBackButton">Back</Button>
+</VBox>

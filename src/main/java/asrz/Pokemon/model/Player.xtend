@@ -1,8 +1,8 @@
 package asrz.Pokemon.model
 
+import asrz.Pokemon.model.enums.Region
 import org.bson.codecs.pojo.annotations.BsonIgnore
 import xtendfx.beans.FXBindable
-import asrz.Pokemon.model.enums.Region
 
 @FXBindable
 class Player extends Trainer {
@@ -19,6 +19,8 @@ class Player extends Trainer {
 	
 	PC pc = new PC
 	
+	GymId currentGymId = null
+	Integer currentGymProgress = 0
 	
 	
 	override addPokemon(Pokemon pokemon) {
@@ -37,8 +39,14 @@ class Player extends Trainer {
 		return COLLECTION_NAME
 	}
 	
+	@BsonIgnore
 	def getPokedexForRegion(Region region) {
 		return pokedexes.findFirst[it.region == region]
+	}
+	
+	@BsonIgnore
+	def getCurrentGym() {
+		return Gyms.gymMap.get(currentGymId)
 	}
 	
 }

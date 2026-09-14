@@ -5,19 +5,26 @@ import asrz.Pokemon.model.enums.Stat
 import asrz.Pokemon.model.enums.Type
 import asrz.Pokemon.model.interfaces.ILabeled
 import asrz.Pokemon.pokeAPI.model.moves.MoveDAO
+import asrz.Pokemon.pokeAPI.model.pokemon.AbilityDAO
 import asrz.Pokemon.pokeAPI.model.pokemon.PokemonDAO
 import asrz.Pokemon.pokeAPI.model.pokemon.PokemonFormDAO
 import asrz.Pokemon.pokeAPI.model.pokemon.PokemonSpeciesDAO
 import asrz.Pokemon.pokeAPI.model.pokemon.PokemonSpritesDAO
+import asrz.Pokemon.util.Util
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
-import asrz.Pokemon.pokeAPI.model.pokemon.AbilityDAO
 
 @Accessors
 class PokemonSpecies implements ILabeled {
 	
+	public static final String[] ULTRA_BEASTS = #[
+		"nihilego", "buzzwole", "pheromosa", "xurkitree", "celesteela", "kartana", "guzzlord", "poipole", "naganadel", "stakataka", "blacephalon"
+	]
+	
 	Integer pokemonDaoId
+	String pokemonDaoName
 	Integer pokemonSpeciesDaoId
+	String pokemonSpeciesDaoName
 	
 	String name
 	Type type_1
@@ -44,6 +51,8 @@ class PokemonSpecies implements ILabeled {
 	List<Ability> abilities
 	Ability hiddenAbility
 	
+	int weight //in hectograms
+	
 	new() {}
 	
 	new(
@@ -56,7 +65,9 @@ class PokemonSpecies implements ILabeled {
 		String languageName
 	) {
 		pokemonDaoId = pokemonDAO.id
+		pokemonDaoName = pokemonDAO.name
 		pokemonSpeciesDaoId = pokemonSpeciesDAO.id
+		pokemonSpeciesDaoName = pokemonSpeciesDAO.name
 		name = pokemonSpeciesDAO.names.findFirst[language.name == languageName]?.name ?: name
 		genderRate = pokemonSpeciesDAO.genderRate
 		growthRate = GrowthRate.fromPokeApiLabel(pokemonSpeciesDAO.growthRate.name)
@@ -74,6 +85,8 @@ class PokemonSpecies implements ILabeled {
 		
 		baseExperience = pokemonDAO.baseExperience
 		captureRate = pokemonSpeciesDAO.captureRate
+		
+		weight = pokemonDAO.weight
 		
 		val moveDAOsByName = moveDAOs.toMap[it.name]
 		pokemonMoves = pokemonDAO.moves.flatMap[pokemonMoveDAO |
@@ -96,6 +109,10 @@ class PokemonSpecies implements ILabeled {
 			default:
 				throw new RuntimeException("Unexpected base stat: " + stat)
 		}
+	}
+	
+	def List<Type> getTypes() {
+		return Util.list(type_1, type_2).filterNull.toList
 	}
 	
 	override String getLabel() {

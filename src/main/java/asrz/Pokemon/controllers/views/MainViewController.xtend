@@ -30,4 +30,9 @@ class MainViewController extends BasicController {
 		}
 	}
 	
+	def updateGymView() {
+		println("UPDATE GYM VIEW")
+		regionsTab.updateGymView()
+	}
+	
 }

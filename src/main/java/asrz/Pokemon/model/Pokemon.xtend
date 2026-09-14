@@ -1,11 +1,11 @@
 package asrz.Pokemon.model
 
-import asrz.Pokemon.model.enums.BattleSlot
 import asrz.Pokemon.model.enums.Gender
 import asrz.Pokemon.model.enums.MoveLearnMethod
 import asrz.Pokemon.model.enums.Nature
 import asrz.Pokemon.model.enums.Stat
 import asrz.Pokemon.model.enums.StatusAilment
+import asrz.Pokemon.model.enums.Type
 import asrz.Pokemon.model.interfaces.ILabeled
 import asrz.Pokemon.util.Util
 import java.util.List
@@ -33,6 +33,7 @@ class Pokemon extends Entity implements ILabeled {
 	final static int LEVEL_CAP = 100
 	
 	Integer pokemonDaoId
+	String pokemonDaoName
 	
 	@BsonIgnore
 	PokemonSpecies species
@@ -49,13 +50,16 @@ class Pokemon extends Entity implements ILabeled {
 	Gender gender
 	
 	String nickname
-
+	
 	//map properties
 	ObservableStatMap individualValues = new ObservableStatMap
 	ObservableStatMap effortValues = new ObservableStatMap
 	
 	@BsonIgnore
 	ObservableStatMap tempStatChanges = new ObservableStatMap
+	
+	TypeList types = new TypeList
+	List<Type> formerTypes
 
 	//stat bindings
 	@BsonIgnore
@@ -118,13 +122,17 @@ class Pokemon extends Entity implements ILabeled {
 	Move move_4
 	
 	@BsonIgnore
-	StatusAilment ailment
+	StatusAilment statusAilment
 	@BsonIgnore
-	ObservableMap<StatusAilment, BattleSlot> volatileAilments = FXCollections.observableHashMap
+	StatusAilmentInfo statusAilmentInfo
+	@BsonIgnore
+	ObservableMap<StatusAilment, StatusAilmentInfo> volatileStatusAilments = FXCollections.observableHashMap
 	
 	@BsonIgnore
 	Ability ability
 	String abilityDaoName
+	
+	Ability formerAbility
 	
 	new() {}
 	
@@ -159,6 +167,7 @@ class Pokemon extends Entity implements ILabeled {
 	private def static fromSpeciesAndValueSetter(PokemonSpecies species, Consumer<Pokemon> valueSetter) {
 		val pokemon = new Pokemon() => [
 			pokemonDaoId = species.pokemonDaoId
+			pokemonDaoName = species.pokemonDaoName
 			setSpecies(species)
 			setGender(Gender.randomGender(species.genderRate))
 			valueSetter.accept(it)
@@ -170,6 +179,10 @@ class Pokemon extends Entity implements ILabeled {
 			setShiny(Util.randomInt(1, 8192) == 8192)
 			
 			setAbility(Util.randomChoice(species.abilities))
+			
+			types = new TypeList
+			types.add(species.type_1)
+			types.add(species.type_2)
 			
 			species.pokemonMoves.filter[learnMethod == MoveLearnMethod.LEVEL_UP && levelLearnedAt == 1]
 			.map[move]
@@ -326,6 +339,27 @@ class Pokemon extends Entity implements ILabeled {
 		return Util.list(move_1, move_2, move_3, move_4).filterNull.toList
 	}
 	
+	def void setMoves(List<Move> moves) {
+		move_1 = null
+		move_2 = null
+		move_3 = null
+		move_4 = null
+		
+		if (moves.size() > 0) {
+			move_1 = moves.get(0)
+			if (moves.size() > 1) {
+				move_2 = moves.get(1)
+				if (moves.size() > 2) {
+					move_3 = moves.get(2)
+					if (moves.size() > 3) {
+						move_4 = moves.get(3)
+					}
+				}
+			}
+		}
+		
+	}
+	
 	@BsonIgnore
 	def List<Integer> getMoveDaoIds() {
 		return Util.list(move_1DaoId, move_2DaoId, move_3DaoId, move_4DaoId).filterNull.toList
@@ -401,11 +435,6 @@ class Pokemon extends Entity implements ILabeled {
 		}
 	}
 	
-	@BsonIgnore
-	def getTypes() {
-		return Util.list(species.type_1, species.type_2).filterNull.toList
-	}
-	
 	def applyDamage(int damage) {
 		if (hp - damage < 0) {
 			hp = 0
@@ -446,11 +475,19 @@ class Pokemon extends Entity implements ILabeled {
 	
 	def healHpAndStatuses() {
 		hp = maxHp
-		ailment = null
-		volatileAilments.clear()
+		statusAilment = null
+		volatileStatusAilments.clear()
 		tempStatChanges.clear()
 		for (move : moves) {
 			move.pp = move.maxPP
+		}
+		types = new TypeList
+		types.add(species.type_1)
+		types.add(species.type_2)
+		
+		if (formerAbility !== null) {
+			ability = formerAbility
+			formerAbility = null
 		}
 	}
 	
@@ -459,13 +496,16 @@ class Pokemon extends Entity implements ILabeled {
 		return COLLECTION_NAME
 	}
 	
-	def applyAilment(StatusAilment ailment) {
-		if (ailment.isVolatile && !volatileAilments.containsKey(ailment)) {
-			volatileAilments.put(ailment, null)
+	def int getWeight() {
+		val weight = species.weight
+		
+		val weightModifier = ability?.weightModifierFunction?.get() ?: null
+		
+		if (weightModifier !== null) {
+			return Math.floor(weight * weightModifier) as int
 		}
-		if (!ailment.volatile && this.ailment === null) {
-			this.ailment = ailment
-		}
+		
+		return weight
 	}
 	
 }

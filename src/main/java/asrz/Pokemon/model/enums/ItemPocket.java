@@ -11,10 +11,26 @@ public enum ItemPocket {
 	MAIL("Mail", "mail"),
 	BATTLE("Battle", "battle"),
 	KEY("Key", "key"),
+	
+	MEGA_STONES("Mega Stones"),
+	Z_CRYSTALS("Z-Crystals"),
+	GEMS("Gems"),
+	PLATES("Plates"),
+	TYPE_BOOSTERS("Type Boosters"),
+	STAT_CHANGING("Stat Changing"),
+	EVOLUTION("Evolution"),
+	TM_MATERIALS("TM Materials"),
+	MEMORIES("Memories"),
+	SPECIES_CANDIES("Species Candies"),
+	TERA_SHARDS("Tera Shards"),
 	;
 	
 	String label;
 	String apiString;
+	
+	private ItemPocket(String label) {
+		this(label, null);
+	}
 	
 	private ItemPocket(String label, String apiString) {
 		this.label = label;

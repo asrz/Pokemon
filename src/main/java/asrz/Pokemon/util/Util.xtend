@@ -1,12 +1,19 @@
 package asrz.Pokemon.util
 
+import java.util.ArrayList
 import java.util.Collection
 import java.util.List
 
 class Util {
 	
 	def static <T> List<T> list(T... elements) {
-		return elements.toList
+		val result = new ArrayList(elements.size)
+		
+		for (T t : elements) {
+			result.add(t)
+		}
+		
+		return result
 	}
 	
 	def static isBlank(String str) {
@@ -17,7 +24,15 @@ class Util {
 		return str.length == 0
 	}
 	
+	def static <T> randomChoice(T... choices) {
+		return randomChoice(Util.list(choices))
+	}
+	
 	def static <T> randomChoice(Collection<T> choices) {
+		if (choices.empty) {
+			return null
+		}
+		
 		val index = Math.floor(Math.random * choices.size()) as int
 		return choices.get(index)
 	}
@@ -72,4 +87,31 @@ class Util {
 		return haystack.contains(needle)
 	}
 	
+	def static <T> boolean in(T needle, Collection<T> haystack) {
+		return haystack.contains(needle)
+	}
+	
+	def static <T> List<T> difference(Collection<T> collection1, Collection<T> collection2) {
+		val result = new ArrayList<T>
+		
+		for (T t : collection1) {
+			if (!collection2.contains(t)) {
+				result.add(t)
+			}
+		}
+		
+		return result
+	}
+	
+	def static <T> boolean isEmpty(Collection<T> collection) {
+		return collection === null || collection.isEmpty()
+	}
+	
+	def static boolean equals(Object o1, Object o2) {
+		if (o1 === null || o2 === null) {
+			return false
+		}
+		
+		return o1.equals(o2)
+	}
 }

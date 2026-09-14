@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+
+<fx:root type="javafx.scene.control.DialogPane" xmlns:fx="http://javafx.com/fxml">
+	<buttonTypes>
+		<ButtonType fx:constant="CLOSE" />
+	</buttonTypes>
+	<content>
+		<GridPane hgap="5">
+			<Button fx:id="opponentPrimaryButton"   GridPane.rowIndex="0" GridPane.columnIndex="0" />
+			<Button fx:id="opponentSecondaryButton" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+			<Button fx:id="playerPrimaryButton"     GridPane.rowIndex="1" GridPane.columnIndex="0" />
+			<Button fx:id="playerSecondaryButton"   GridPane.rowIndex="1" GridPane.columnIndex="1" />
+		</GridPane>
+	</content>
+</fx:root>

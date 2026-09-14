@@ -8,6 +8,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
 import java.util.ArrayList
+import asrz.Pokemon.model.enums.Type
 
 class CustomObservableList<T> implements ObservableList<T>, Iterable<T> {
 	
@@ -216,3 +217,4 @@ class MoveList extends CustomObservableList<Move> {}
 class PokedexList extends CustomObservableList<Pokedex> {}
 class PokedexEntryList extends CustomObservableList<PokedexEntry> {}
 class IntegerList extends CustomObservableList<Integer> {}
+class TypeList extends CustomObservableList<Type> {}

@@ -9,4 +9,5 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="asrz.Pokemon.controllers.views.PokedexEntryViewController">
 	<BagTab fx:id="bagTab" />
+	<Button fx:id="cancelButton" text="Cancel" />
 </VBox>

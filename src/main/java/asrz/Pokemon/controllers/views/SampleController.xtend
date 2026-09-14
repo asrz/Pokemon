@@ -32,23 +32,27 @@ class SampleController extends BasicController {
 		}
 		
 		for (player : players) {
-			root.children.add(new HBox(
-				new Button(player.name) => [
+			val hbox = new HBox()
+			root.children.add(hbox)
+			
+			val playerButton = new Button(player.name) => [
 					onAction = [
 						startGame(player.name)
 					]
-				],
-				new Button("Delete") => [ button |
-					button.onAction = [
-						DialogUtil.createYesNoDialog("Are you sure? This cannot be undone").showAndWait.ifPresent[
-							if (it.buttonData == ButtonData.YES) {
-								c.playerService.deleteGame(player)
-								button.visible = false
-							}
-						]
+				]
+			val deleteButton = new Button("Delete") => [ button |
+				button.onAction = [
+					DialogUtil.createYesNoDialog("Are you sure? This cannot be undone").showAndWait.ifPresent[
+						if (it.buttonData == ButtonData.YES) {
+							c.playerService.deleteGame(player)
+							button.visible = false
+							playerButton.visible = false
+						}
 					]
 				]
-			))
+			]
+			hbox.children.add(playerButton)
+			hbox.children.add(deleteButton)
 		}
 	}
 	

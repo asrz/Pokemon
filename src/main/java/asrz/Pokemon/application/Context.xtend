@@ -8,6 +8,7 @@ import asrz.Pokemon.model.Pokedex
 import asrz.Pokemon.model.mongo.CustomCodecProvider
 import asrz.Pokemon.service.PlayerService
 import asrz.Pokemon.service.PokemonService
+import asrz.Pokemon.service.ItemService
 import asrz.Pokemon.util.Database
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
@@ -28,6 +29,7 @@ class Context {
 	
 	public PokemonService pokemonService
 	public PlayerService playerService
+	public ItemService itemService
 	
 	public Stage mainStage
 	public Stage battleStage
@@ -36,6 +38,7 @@ class Context {
 	public MainViewController mainViewController
 	public BattleViewController battleViewController
 	public IController otherController
+	
 	
 	new() {
 		val ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017/")
@@ -47,11 +50,12 @@ class Context {
 		database = new Database(mongoClient.getDatabase("PokeAPI"), mongoClient.getDatabase("Pokemon"))
 		pokemonService = new PokemonService(this)
 		playerService = new PlayerService(this)
+		itemService = new ItemService(this)
 		
 		val kantoPokedexDao = database.getPokedexes(Filters.eq("name", "kanto")).first
 //		val pokedexes = database.getPokedexes(Filters.empty)
 		player = new Player() => [
-			it.pokedexes.addAll(pokedexes.map[pokedex | Pokedex.fromApi(kantoPokedexDao, 'en')])
+			pokedexes.add(Pokedex.fromApi(kantoPokedexDao, 'en'))
 		]
 	}
 	

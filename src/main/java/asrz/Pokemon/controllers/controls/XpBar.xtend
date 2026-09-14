@@ -20,8 +20,6 @@ import xtendfx.beans.FXBindable
 @FXBindable
 class XpBar extends StackPane implements IController {
 
-	BattleViewController battleViewController
-	
 	Pokemon pokemon
 	
 	@FXML
@@ -82,7 +80,7 @@ class XpBar extends StackPane implements IController {
 		]
 	}
 	
-	def addText(String text, Object...args) {
-		battleViewController.addText(text, args)
+	def void addText(String text, Object...args) {
+		c.battleViewController.addText(text, args)
 	}
 }

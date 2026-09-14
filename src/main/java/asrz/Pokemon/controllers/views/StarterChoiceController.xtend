@@ -4,6 +4,7 @@ import asrz.Pokemon.application.Application
 import asrz.Pokemon.application.SceneHandle
 import asrz.Pokemon.model.Pokemon
 import asrz.Pokemon.model.Trainer
+import asrz.Pokemon.model.enums.BattleType
 import asrz.Pokemon.model.enums.PokedexEntryStatus
 import asrz.Pokemon.pokeAPI.model.pokemon.PokemonDAO
 import asrz.Pokemon.util.DialogUtil
@@ -11,6 +12,7 @@ import asrz.Pokemon.util.ImageLoader
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
+import asrz.Pokemon.model.TrainerClass
 
 class StarterChoiceController extends BasicController {
 	
@@ -49,10 +51,9 @@ class StarterChoiceController extends BasicController {
 	
 	
 	def choosePokemon(Pokemon starter) {
-		val rival = new Trainer("Rival", "Gary")
+		val rival = new Trainer(new TrainerClass() => [name = "Rival"], "Gary")
 		
-		val rivalStarter = 
-		if (starter == pokemon1) {
+		val rivalStarter = if (starter == pokemon1) {
 			pokemon2
 		} else if (starter == pokemon2) {
 			pokemon3
@@ -71,19 +72,13 @@ class StarterChoiceController extends BasicController {
 		
 		DialogUtil.showNicknameDialog(starter)
 		
-//		loadTeamView()
-//		loadPokemonView()
-		loadBattleView(rival)
-//		loadMainView()
+//		for (item : c.itemService.getRealItems()) {
+//			player.itemBag.addItem(item)
+//		}
+		
+		loadMainView()
+		//loadBattleView(rival)
 	}
-	
-//	def loadTeamView() {
-//		Application.setScene(SceneHandle.POKEMON_TEAM_VIEW, [new PokemonTeamViewController])
-//	}
-	
-//	def loadPokemonView() {
-//		Application.setScene(SceneHandle.POKEMON_VIEW, [new PokemonViewController(player.team.pokemon_1)])
-//	}
 	
 	def loadMainView() {
 		Application.setScene(SceneHandle.MAIN_VIEW, [
@@ -93,7 +88,7 @@ class StarterChoiceController extends BasicController {
 	
 	def loadBattleView(Trainer trainer) {
 		Application.setScene(SceneHandle.BATTLE_VIEW, [], [ controller |
-			(controller as BattleViewController).battleTrainer(trainer)
+			(controller as BattleViewController).battleTrainer(trainer, BattleType.SINGLE)
 		])
 	}
 }

@@ -4,7 +4,18 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import asrz.Pokemon.controllers.controls.*?>
 
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml">
-	<TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"/>
+	<TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+		<KantoTab />
+	</TabPane>
+	<VBox visible="false" fx:id="gymPane">
+		<Label fx:id="gymLabel" />
+		<HBox>
+			<Button fx:id="continueGymButton" text="Continue" onAction="#continueGym"/>
+			<Button fx:id="retreatGymButton" text="Retreat" onAction="#retreatGym"/>
+		</HBox>
+	</VBox>
 </fx:root>

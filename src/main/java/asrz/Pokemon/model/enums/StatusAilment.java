@@ -1,6 +1,10 @@
 package asrz.Pokemon.model.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import asrz.Pokemon.model.Pokemon;
+import asrz.Pokemon.util.Util;
 
 public enum StatusAilment {
 
@@ -10,6 +14,7 @@ public enum StatusAilment {
 	FREEZE("freeze", false),
 	BURN("burn", false),
 	POISON("poison", false),
+	
 	CONFUSION("confusion"),
 	INFATUATION("infatuation"),
 	TRAP("trap"),
@@ -25,12 +30,21 @@ public enum StatusAilment {
 	INGRAIN("ingrain"),
 	SILENCE("silence"),
 	TAR_SHOT("tar_shot"),
-	FLINCH("flinch"),
+	
+	//not ailments in pokeApi
+	FLINCH,
+	TAUNT,
+	ENCORE,
+	CHOICE,
+	CHARGE,
 	;
 	
 	private String apiLabel;
 	private boolean volatileAilment;
 	
+	private StatusAilment() {
+		this(null, true);
+	}
 	private StatusAilment(String apiLabel) {
 		this(apiLabel, true);
 	}
@@ -49,12 +63,16 @@ public enum StatusAilment {
 		}
 		
 		for (StatusAilment ailment : values()) {
-			if (ailment.apiLabel.equals(apiString)) {
+			if (Util.equals(ailment.apiLabel, apiString)) {
 				return ailment;
 			}
 		}
 		
 		return null;
+	}
+	
+	public static List<StatusAilment> nonVolatile() {
+		return Util.list(SLEEP, PARALYSIS, POISON, BURN, FREEZE);
 	}
 	
 	public String getMessage(Pokemon pokemon, Pokemon inflicter) {

@@ -54,9 +54,27 @@ class ListMap<K, V> {
 		innerMap.put(key, list)
 	}
 	
+	def addIfAbsent(K key, V value) {
+		val list = innerMap.getOrDefault(key, new ArrayList)
+		if (!list.contains(value)) {
+			list.add(value)
+			innerMap.put(key, list)
+		}
+	}
+	
 	def addAll(K key, List<V> values) {
 		val list = innerMap.getOrDefault(key, new ArrayList)
 		list.addAll(values)
+		innerMap.put(key, list)
+	}
+	
+	def addAllAbsent(K key, List<V> values) {
+		val list = innerMap.getOrDefault(key, new ArrayList)
+		for (V value : values) {
+			if (!list.contains(value)) {
+				list.add(value)
+			}
+		}
 		innerMap.put(key, list)
 	}
 	
